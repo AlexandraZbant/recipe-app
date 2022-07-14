@@ -1,10 +1,10 @@
 package com.alexandrazbant.recipeapp.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Notes {
 
@@ -17,12 +17,4 @@ public class Notes {
 
     @Lob
     private String recipeNotes;
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
 }

@@ -1,5 +1,7 @@
 package com.alexandrazbant.recipeapp.services;
 
+import com.alexandrazbant.recipeapp.converters.RecipeCommandToRecipe;
+import com.alexandrazbant.recipeapp.converters.RecipeToRecipeCommand;
 import com.alexandrazbant.recipeapp.domain.Recipe;
 import com.alexandrazbant.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,11 +25,17 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     public void setUp()throws Exception{
         MockitoAnnotations.openMocks(this);
 
-        recipeServiceImpl = new RecipeServiceImpl(recipeRepository);
+        recipeServiceImpl = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test

@@ -27,16 +27,16 @@ public class RecipeServiceImpl implements RecipeService {
         this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
-
     @Override
     public Set<Recipe> getRecipes() {
         log.debug("I'm in the service");
 
-        Set<Recipe> recipeSet =new HashSet<>();
+        Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
     }
 
+    @Override
     public Recipe findById(Long l) {
 
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
@@ -46,6 +46,12 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return recipeOptional.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long l) {
+        return recipeToRecipeCommand.convert(findById(l));
     }
 
     @Override

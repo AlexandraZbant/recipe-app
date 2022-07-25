@@ -1,2 +1,8 @@
-package com.alexandrazbant.recipeapp.services;public interface IngredientService {
+package com.alexandrazbant.recipeapp.services;
+
+import com.alexandrazbant.recipeapp.commands.IngredientCommand;
+
+public interface IngredientService {
+
+    IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
 }

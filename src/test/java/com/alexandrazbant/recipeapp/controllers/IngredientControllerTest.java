@@ -1,6 +1,8 @@
 package com.alexandrazbant.recipeapp.controllers;
 
+import com.alexandrazbant.recipeapp.commands.IngredientCommand;
 import com.alexandrazbant.recipeapp.commands.RecipeCommand;
+import com.alexandrazbant.recipeapp.services.IngredientService;
 import com.alexandrazbant.recipeapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class IngredientControllerTest {
 
     @Mock
+    IngredientService ingredientService;
+
+    @Mock
     RecipeService recipeService;
 
     IngredientController ingredientController;
@@ -27,7 +32,7 @@ class IngredientControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        ingredientController = new IngredientController(recipeService);
+        ingredientController = new IngredientController(recipeService, ingredientService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(ingredientController).build();
     }
@@ -44,5 +49,19 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    void showIngredient() throws Exception{
+//         given
+        IngredientCommand ingredientCommand = new IngredientCommand();
+//         when
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+//        then
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
+
     }
 }

@@ -1,7 +1,6 @@
 package com.alexandrazbant.recipeapp.converters;
 
 import com.alexandrazbant.recipeapp.commands.UnitOfMeasureCommand;
-import com.alexandrazbant.recipeapp.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import com.alexandrazbant.recipeapp.domain.UnitOfMeasure;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,12 +38,12 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
         command.setDescription(DESCRIPTION);
 
         //when
-        UnitOfMeasure uom = converter.convert(command);
+        UnitOfMeasure unitOfMeasure = converter.convert(command);
 
         //then
-        assertNotNull(uom);
-        assertEquals(LONG_VALUE, uom.getId());
-        assertEquals(DESCRIPTION, uom.getDescription());
+        assertNotNull(unitOfMeasure);
+        assertEquals(LONG_VALUE, unitOfMeasure.getId());
+        assertEquals(DESCRIPTION, unitOfMeasure.getDescription());
 
     }
 }

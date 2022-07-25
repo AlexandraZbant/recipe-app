@@ -1,8 +1,6 @@
 package com.alexandrazbant.recipeapp.converters;
 
 import com.alexandrazbant.recipeapp.commands.IngredientCommand;
-import com.alexandrazbant.recipeapp.converters.IngredientToIngredientCommand;
-import com.alexandrazbant.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.alexandrazbant.recipeapp.domain.Ingredient;
 import com.alexandrazbant.recipeapp.domain.Recipe;
 import com.alexandrazbant.recipeapp.domain.UnitOfMeasure;
@@ -18,7 +16,7 @@ class IngredientToIngredientCommandTest {
     public static final Recipe RECIPE = new Recipe();
     public static final BigDecimal AMOUNT = new BigDecimal("1");
     public static final String DESCRIPTION = "Cheeseburger";
-    public static final Long UOM_ID = 2L;
+    public static final Long UNIT_OF_MEASURE_ID = 2L;
     public static final Long ID_VALUE = 1L;
 
 
@@ -67,16 +65,16 @@ class IngredientToIngredientCommandTest {
         ingredient.setAmount(AMOUNT);
         ingredient.setDescription(DESCRIPTION);
 
-        UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setId(UOM_ID);
+        UnitOfMeasure unitOfMeasure = new UnitOfMeasure();
+        unitOfMeasure.setId(UNIT_OF_MEASURE_ID);
 
-        ingredient.setUnitOfMeasure(uom);
+        ingredient.setUnitOfMeasure(unitOfMeasure);
         //when
         IngredientCommand ingredientCommand = converter.convert(ingredient);
         //then
         assertEquals(ID_VALUE, ingredientCommand.getId());
         assertNotNull(ingredientCommand.getUnitOfMeasure());
-        assertEquals(UOM_ID, ingredientCommand.getUnitOfMeasure().getId());
+        assertEquals(UNIT_OF_MEASURE_ID, ingredientCommand.getUnitOfMeasure().getId());
         // assertEquals(RECIPE, ingredientCommand.get);
         assertEquals(AMOUNT, ingredientCommand.getAmount());
         assertEquals(DESCRIPTION, ingredientCommand.getDescription());

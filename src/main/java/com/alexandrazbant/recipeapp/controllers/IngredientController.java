@@ -1,6 +1,8 @@
 package com.alexandrazbant.recipeapp.controllers;
 
 import com.alexandrazbant.recipeapp.commands.IngredientCommand;
+import com.alexandrazbant.recipeapp.commands.RecipeCommand;
+import com.alexandrazbant.recipeapp.commands.UnitOfMeasureCommand;
 import com.alexandrazbant.recipeapp.services.IngredientService;
 import com.alexandrazbant.recipeapp.services.RecipeService;
 import com.alexandrazbant.recipeapp.services.UnitOfMeasureService;
@@ -36,9 +38,30 @@ public class IngredientController {
     public String showRecipeIngredient(@PathVariable String recipeId,
                                        @PathVariable String id, Model model){
         log.debug("Getting ingredient id: " + id + " for recipe id: " + recipeId);
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId),
-                Long.valueOf(id)));
+        model.addAttribute("ingredient", ingredientService
+                .findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String newIngredientRecipe(@PathVariable String recipeId, Model model){
+
+        //make sure we have a good id value
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        //todo raise exception if null
+
+        //need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        //init uom
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+        model.addAttribute("unitOfMeasureList",  unitOfMeasureService.listAllUnitOfMeasures());
+
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping
@@ -46,7 +69,8 @@ public class IngredientController {
     public String updateRecipeIngredient(@PathVariable String recipeId,
                                          @PathVariable String id, Model model){
         log.debug("Updating Ingredient Id: " + id + " for recipe id: " + recipeId);
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute("ingredient", ingredientService
+                .findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
 
         model.addAttribute("unitOfMeasureList", unitOfMeasureService.listAllUnitOfMeasures());
         return "recipe/ingredient/ingredientform";

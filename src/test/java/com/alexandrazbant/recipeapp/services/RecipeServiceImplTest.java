@@ -1,5 +1,6 @@
 package com.alexandrazbant.recipeapp.services;
 
+import com.alexandrazbant.recipeapp.commands.RecipeCommand;
 import com.alexandrazbant.recipeapp.converters.RecipeCommandToRecipe;
 import com.alexandrazbant.recipeapp.converters.RecipeToRecipeCommand;
 import com.alexandrazbant.recipeapp.domain.Recipe;
@@ -51,6 +52,27 @@ class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    void getRecipeCommandById(){
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+
+        RecipeCommand commandById = recipeServiceImpl.findCommandById(1L);
+
+        assertNotNull("Null recipe returned", commandById);
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+
     }
     @Test
     public void getRecipes() throws Exception{
